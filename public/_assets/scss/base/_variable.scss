@@ -1,0 +1,91 @@
+/**color Variable**/
+
+$color-primary: #4390E0;
+$color-primary-soft: #71ACE8;
+$color-primary-dark: #25ACAB;
+$color-secondary: #6C3A92;
+$color-purple: #645CFE;
+$color-secondary-soft: #F4F4FF;
+$color-secondary-dark: #2F3385;
+$color-dark: #2C2C2C;
+$color-gray01: #8A8888;
+$color-grey02:#D1D1D1;
+$color-gray03:#F5F5F5;
+$color-gray04:#FAFAFA;
+$color-white:#FFFFFF;
+$color-info:#1890FF;
+$color-light-sky: #A0D1F9;
+$color-info-dark:#0777DE;
+$color-info-light:#EEF7FF;
+$color-warning:#FFBF2E;
+$color-warning-dark:#F7AB02;
+$color-warning-soft:#FDF6ED;
+$color-danger:#F55A54;
+$color-danger-dark:#F1444E;
+$color-danger-light:#FFF3F4;
+$color-success:#04d182;
+$color-success-dark:#18B87A;
+$color-success-light:#F1FFF9;
+$color-light:#F9F9F9;
+$color-gradient01:linear-gradient(90deg, #3BC5C4 -4.2%, #3D42AA 100%);
+$color-gradient02: linear-gradient(90deg, #3D42AA 0%, #686FF1 100%);
+$color-gradient03:linear-gradient(180deg, #3BC5C4 -0.48%, #41E3E2 100%);
+$color-gradient04:linear-gradient(124.52deg, #7100FF 1.36%, #0EF1FF 97.81%);
+$color-gradientGreen:linear-gradient(90deg, #04D182 0%, #3AF2AB 100%);
+$color-gradientBlue:linear-gradient(90deg, #1890FF 0%, #257DCE 100%);
+$color-gradientYellow:linear-gradient(90deg, #FFBF2E 0%, #EFCB79 100%);
+$color-grdientRed:linear-gradient(90deg, #FF5C66 0%, #F4878E 100%);
+$color-gradientGray:linear-gradient(89.47deg, #D1D1D1 3.1%, #DBDBDB 99.54%);
+$color-gradientBlack:linear-gradient(90deg, #2D2D2D 0%, #555555 100%);
+$color-box-shadow01: 0px 0px 40px rgba(48, 48, 48, 0.04),
+0px 0px 12px rgba(48, 48, 48, 0.04);
+$color-box-shadow02: 0px 11px 40px rgba(48, 48, 48, 0.09),
+0px 1.37737px 9.01552px rgba(48, 48, 48, 0.045);
+$color-box-shadow03:0px 78px 113px rgba(0, 0, 0, 0.06),
+0px 17.4223px 25.24px rgba(0, 0, 0, 0.0357664),
+0px 5.18708px 7.51462px rgba(0, 0, 0, 0.0242336);
+$color-box-shadow04:4px 4px 24px rgba(48, 48, 48, 0.16),
+0px 2px 8px rgba(48, 48, 48, 0.04);
+$color-box-shadow05:0px 12px 16px rgba(59, 197, 196, 0.24),
+0px 4px 8px rgba(59, 197, 196, 0.06);
+$color-box-shadow06: 0px 78px 113px rgba(0, 0, 0, 0.06),
+0px 17.4223px 25.24px rgba(0, 0, 0, 0.0357664),
+0px 5.18708px 7.51462px rgba(0, 0, 0, 0.0242336);
+
+.text-purple {
+    color: $color-purple;
+}
+.text-yellow {
+    color: $color-purple;
+}
+.text-gray {
+    color: $color-gray01!important;
+}
+
+
+
+
+// Media Query Variables
+$min1366: "only screen and (min-width: 1366px)";
+$min1200: "only screen and (min-width: 1200px)";
+$min1025: "only screen and (min-width: 1025px)";
+$min992: "only screen and (min-width: 992px)";
+$min768: "only screen and (min-width: 768px)";
+$min576: "only screen and (min-width: 576px)";
+$max1850: "only screen and (max-width: 1850px)";
+$max1700: "only screen and (max-width: 1700px)";
+$max1650: "only screen and (max-width: 1650px)";
+$max1440: "only screen and (max-width: 1440px)";
+$max1366: "only screen and (max-width: 1366px)";
+$max1280: "only screen and (max-width: 1280px)";
+$max1199: "only screen and (max-width: 1199.98px)";
+$max1024: "only screen and (max-width: 1024px)";
+$max991: "only screen and (max-width: 991.98px)";
+$max870: "only screen and (max-width: 870px)";
+$max767: "only screen and (max-width: 767.98px)";
+$max640: "only screen and (max-width: 640px)";
+$max575: "only screen and (max-width: 575.98px)";
+$max480: "only screen and (max-width: 480px)";
+$max374: "only screen and (max-width: 374px)";
+$max375: "only screen and (max-width: 375px)";
+$max320: "only screen and (max-width: 320px)";

@@ -1,0 +1,119 @@
+//Background Gradient Color
+
+.bg-gradient-secondary {
+  background: linear-gradient(90deg, #3d42aa 0%, #686ff1 100%);
+}
+
+.bg-gradient-info {
+  background: linear-gradient(90deg, #257dce 0%, #1890ff 100%);
+}
+
+.bg-gradient-warning {
+  background: linear-gradient(90deg, #ffbf2e 0%, #efcb79 100%);
+}
+
+.bg-gradient-danger {
+  background: linear-gradient(90deg, #ff5c66 0%, #f4878e 100%);
+}
+
+.bg-gradient-success {
+  background: linear-gradient(90deg, #04d182 0%, #3af2ab 100%);
+}
+
+.bg-primary {
+  background-color: $color-primary !important;
+}
+
+//Background Color
+
+.bg-seconday {
+  background-color: $color-secondary !important;
+}
+
+.bg-info {
+  background-color: $color-info !important;
+}
+
+.bg-success {
+  background-color: $color-success !important;
+}
+
+.bg-warning {
+  background-color: $color-warning !important;
+}
+
+.bg-danger {
+  background-color: $color-danger !important;
+}
+
+.bg-primary-soft {
+  background-color: $color-primary-soft !important;
+}
+
+.bg-secondary-soft {
+  background-color: $color-secondary-soft !important;
+}
+
+.bg-white {
+  background-color: $color-white;
+}
+
+// Text color
+
+.text-primary {
+  color: $color-primary !important;
+}
+
+.text-seconday {
+  color: $color-secondary;
+}
+
+.text-info {
+  color: $color-info;
+}
+
+.text-success {
+  color: $color-success;
+}
+
+.text-warning {
+  color: $color-warning;
+}
+
+.text-danger {
+  color: $color-danger;
+}
+
+.text-gray-2 {
+  color: $color-grey02;
+}
+
+// Border color
+
+.border-primary {
+  border: 2px solid $color-primary;
+}
+
+.border-seconday {
+  border: 2px solid $color-secondary;
+}
+
+.border-info {
+  border: 2px solid $color-info;
+}
+
+.border-success {
+  border: 2px solid $color-success;
+}
+
+.border-warning {
+  border: 2px solid $color-warning;
+}
+
+.border-danger {
+  border: 2px solid $color-danger;
+}
+
+.border-white {
+  border: 2px solid $color-white;
+}
