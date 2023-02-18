@@ -2,8 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\BrandAndBenefits;
-use App\Models\Client;
+use App\Models\RatingAndBenefit;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
@@ -16,6 +15,7 @@ class HomeController extends Controller
     public function index(): Factory|View|Application
     {
 //        session()->forget('step_one_data');
+//        session()->forget('step_two_data');
         return view('index');
     }
 
@@ -52,86 +52,81 @@ class HomeController extends Controller
     }
 
     public function storeBenefitsRatings(Request $request){
-            session()->put('step_two_data', $request->all());
-            return redirect()->back();
+        $req_data           = $request->except(['_token']);
+        $step_one_data      = session()->get('step_one_data');
+        $max_data_key       = $step_one_data['max_data_key'];
+        $new_req_data       = [];
+        $max_value_array    = [];
+
+        if(isset($req_data[$max_data_key])){
+            foreach($req_data[$max_data_key]['benefit'] as $key => $value) {
+
+                if(isset($req_data['emotional']['benefit'][$key])){
+                    $this->storeRatingAndBenefit([
+                        'benefit'       => $req_data['emotional']['benefit'][$key],
+                        'type'          => 'emotional',
+                        'rating'        => $req_data['emotional']['rating'][$key],
+                        'ip'            => $request->ip(),
+                        'user_agent'    => $request->header('User-Agent'),
+                    ]);
+                    if ($req_data['emotional']['rating'][$key] > 2) {
+                        $new_req_data['emotional']['benefit'][] = $req_data['emotional']['benefit'][$key];
+                        $new_req_data['emotional']['rating'][]  = $req_data['emotional']['rating'][$key];
+//                        unset($req_data['emotional']['benefit'][$key]);
+//                        unset($req_data['emotional']['rating'][$key]);
+                    }
+                }
+                if(isset($req_data['economic']['benefit'][$key])){
+                    $this->storeRatingAndBenefit([
+                        'benefit'       => $req_data['economic']['benefit'][$key],
+                        'type'          => 'economic',
+                        'rating'        => $req_data['economic']['rating'][$key],
+                        'ip'            => $request->ip(),
+                        'user_agent'    => $request->header('User-Agent'),
+                    ]);
+                    if ($req_data['economic']['rating'][$key] > 2) {
+                        $new_req_data['economic']['benefit'][] = $req_data['economic']['benefit'][$key];
+                        $new_req_data['economic']['rating'][]  = $req_data['economic']['rating'][$key];
+//                        unset($req_data['economic']['benefit'][$key]);
+//                        unset($req_data['economic']['rating'][$key]);
+                    }
+                }
+                if(isset($req_data['functional']['benefit'][$key])){
+                    $this->storeRatingAndBenefit([
+                        'benefit'       => $req_data['functional']['benefit'][$key],
+                        'type'          => 'functional',
+                        'rating'        => $req_data['functional']['rating'][$key],
+                        'ip'            => $request->ip(),
+                        'user_agent'    => $request->header('User-Agent'),
+                    ]);
+                    if ($req_data['functional']['rating'][$key] > 2) {
+                        $new_req_data['functional']['benefit'][] = $req_data['functional']['benefit'][$key];
+                        $new_req_data['functional']['rating'][]  = $req_data['functional']['rating'][$key];
+//                        unset($req_data['functional']['benefit'][$key]);
+//                        unset($req_data['functional']['rating'][$key]);
+                    }
+                }
+            }
+        }
+        $max_value_array['emotional']       = count(@$new_req_data['emotional']['rating']);
+        $max_value_array['economic']        = count(@$new_req_data['economic']['rating']);
+        $max_value_array['functional']      = count(@$new_req_data['functional']['rating']);
+
+        session()->put('step_two_data', [
+            'formatted_data'    => $new_req_data,
+            'max_data_key'      => array_search(max($max_value_array), $max_value_array),
+        ]);
+        return redirect()->back();
     }
 
+    protected function storeRatingAndBenefit($data){
 
-
-
-//    private function checkHas()
-//    {
-//        return BrandAndBenefits::query()
-//            ->where('request_user_ip', request()->getClientIp())
-//            ->where('date_time', now()->format('Y-m-d H:i:s A'))
-//            ->first();
-//    }
-//
-//    public function store(Request $request)
-//    {
-//        try {
-//
-//            $countAllClientData = BrandAndBenefits::query()->where('request_user_ip', request()->getClientIp())->count();
-//            if ($countAllClientData == $request->first_data){
-//                $getSingleRecord = BrandAndBenefits::query()
-//                    ->where('request_user_ip', request()->getClientIp())
-//                    ->orderByDesc('id')
-//                    ->first();
-//                $getSingleRecord->update([
-//                    "request_time" => time(),
-//                    "date_time" => now()->format('Y-m-d H:i:s A'),
-//                    "brands" => json_encode($request->brands),
-//                    "benefits" => json_encode($request->benefits),
-//                ]);
-//            }else{
-//                BrandAndBenefits::query()->create([
-//                    "request_user_ip" => $request->getClientIp(),
-//                    "request_time" => time(),
-//                    "date_time" => now()->format('Y-m-d H:i:s A'),
-//                    "brands" => json_encode($request->brands),
-//                    "benefits" => json_encode($request->benefits),
-//                ]);
-//            }
-//
-//            return response()->json(['success' => true]);
-//
-//        }catch (\Exception $e){
-//            return response()->json(['error' => $e->getMessage()]);
-//        }
-//    }
-//
-//    public function flashRequestClientInfo()
-//    {
-//        try {
-//
-//            $hasData = BrandAndBenefits::query()->where('request_user_ip', request()->getClientIp())->first();
-//
-//            if ($hasData){
-//                BrandAndBenefits::query()->where('request_user_ip', request()->getClientIp())->delete();
-//                return response()->json(['success' => true]);
-//            }
-//
-//        }catch (\Exception $e){
-//            return response()->json(['error' => $e->getMessage()]);
-//        }
-//    }
-//
-//    public function storeClientInformation(Request $request)
-//    {
-//        $validation = Validator::make($request->all(), [
-//            'full_name' => 'required|string',
-//            'email' => 'required|email'
-//        ]);
-//
-//        if ($validation->fails()){
-//            return response()->json(['message' => $validation->messages()]);
-//        }
-//
-//        Client::query()->create([
-//            'full_name' => $request->full_name,
-//            'email' => $request->email
-//        ]);
-//
-//        return true;
-//    }
+        $ratingAndBenefits                  = new RatingAndBenefit();
+        $ratingAndBenefits->request_user_ip = $data['ip'];
+        $ratingAndBenefits->user_agent      = $data['user_agent'];
+        $ratingAndBenefits->benefit         = $data['benefit'];
+        $ratingAndBenefits->type            = $data['type'];
+        $ratingAndBenefits->rating          = $data['rating'];
+        $ratingAndBenefits->save();
+    }
 }

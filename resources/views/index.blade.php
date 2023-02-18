@@ -62,7 +62,7 @@
     </div>
 
     <!-- STEP 1 -->
-    @if(!session()->has('step_one_data') || session()->has('step_two_data'))
+    @if(!session()->has('step_one_data') && !session()->has('step_two_data'))
     <div class="mt-20 mb-16 md:mx-11">
         <!-- HEADING -->
         <div class="flex items-center justify-center">
@@ -216,7 +216,7 @@
                     $step_one_data      = session()->get('step_one_data');
                     $formatted_data     = $step_one_data['formatted_data'];
                     $max_data_key       = $step_one_data['max_data_key'];
-                @endphp
+//                @endphp
 
                 @foreach($formatted_data[$max_data_key] as $key => $value)
                 <tr>
@@ -226,8 +226,8 @@
                             <div class="text-black xl:text-sm sm:text-xs text-[14px]">
                                 <p>{{ @$formatted_data['emotional'][$key] }}</p>
                                 <div class="flex items-center justify-center mt-3">
-                                    <input type="hidden" name="emotional['benefit'][{{ $key }}]" value="{{ @$formatted_data['emotional'][$key] }}" />
-                                    <input type="text" onkeyup="if(value<1) value=1;if(value>5) value=5;" name="emotional['rating'][{{ $key }}]" required
+                                    <input type="hidden" name="emotional[benefit][{{ $key }}]" value="{{ @$formatted_data['emotional'][$key] }}" />
+                                    <input type="text" onkeyup="if(value<1) value=1;if(value>5) value=5;" name="emotional[rating][{{ $key }}]" required
                                         class="text-black text-center placeholder:text-center leading-6 tracking-normal border-[1px] border-dark-grey bg-azure w-[110px] h-[46px] flex items-center justify-center px-2 focus:outline-none"
                                         placeholder="1-5"
                                     />
@@ -243,8 +243,8 @@
                             <div class="text-black xl:text-sm sm:text-xs text-[14px] sm:mt-0  mt-[83px]">
                                 <p class="sm:mb-0 mb-[20px]">{{ @$formatted_data['economic'][$key] }}</p>
                                 <div class="flex items-center justify-center xl:mt-8 lg:mt-7 md:mt-10">
-                                    <input type="hidden" name="economic['benefit'][{{ $key }}]" value="{{ @$formatted_data['economic'][$key] }}" />
-                                    <input type="text" onkeyup="if(value<1) value=1;if(value>5) value=5;" name="economic['rating'][{{ $key }}]" required
+                                    <input type="hidden" name="economic[benefit][{{ $key }}]" value="{{ @$formatted_data['economic'][$key] }}" />
+                                    <input type="text" onkeyup="if(value<1) value=1;if(value>5) value=5;" name="economic[rating][{{ $key }}]" required
                                         class="text-black text-center placeholder:text-center text-[20px] leading-6 tracking-normal border-[1px] border-dark-grey bg-azure w-[110px] h-[46px] flex items-center justify-center px-2 focus:outline-none"
                                         placeholder="1-5"
                                     />
@@ -260,8 +260,8 @@
                             <div class="text-black xl:text-sm sm:text-xs text-[14px] sm:mt-0  mt-[83px]">
                                 <p class="sm:mb-0 mb-[20px]">{{ @$formatted_data['functional'][$key] }}</p>
                                 <div class="flex items-center justify-center xl:mt-8 lg:mt-7 md:mt-10">
-                                    <input type="hidden" name="functional['benefit'][{{ $key }}]" value="{{ @$formatted_data['functional'][$key] }}" />
-                                    <input type="text" onkeyup="if(value<1) value=1;if(value>5) value=5;" name="functional['rating'][{{ $key }}]" required
+                                    <input type="hidden" name="functional[benefit][{{ $key }}]" value="{{ @$formatted_data['functional'][$key] }}" />
+                                    <input type="text" onkeyup="if(value<1) value=1;if(value>5) value=5;" name="functional[rating][{{ $key }}]" required
                                         class="text-black text-center placeholder:text-center text-[20px] leading-6 tracking-normal border-[1px] border-dark-grey bg-azure w-[110px] h-[46px] flex items-center justify-center px-2 focus:outline-none"
                                         placeholder="1-5"
                                     />
@@ -335,61 +335,47 @@
                         FUNCTIONAL BENEFITS
                     </th>
                 </tr>
+                @php
+                    $session_data_two   = session()->get('step_two_data');
+                    $formatted_data_two = $session_data_two['formatted_data'];
+                    $max_data_key       = $session_data_two['max_data_key'];
+                @endphp
+                @isset($formatted_data_two[$max_data_key])
+                @foreach($formatted_data_two[$max_data_key]['benefit'] as $key => $value)
 
                 <!-- ROW 1 -->
                 <tr>
                     <td>
-                        <div class="flex items-center justify-center border-[1px] border-white lg:h-14 md:h-20 h-28 bg-red bg-opacity-10 xl:text-sm sm:text-xs text-[14px]">
-                            <p>Connecting People</p>
-                        </div>
+                        @isset($formatted_data_two['emotional']['benefit'][$key])
+                            @if($formatted_data_two['emotional']['rating'][$key] > 2)
+                                <div class="flex items-center justify-center border-[1px] border-white lg:h-14 md:h-20 h-28 bg-red bg-opacity-10 xl:text-sm sm:text-xs text-[14px]">
+                                    <p>{{ $formatted_data_two['emotional']['benefit'][$key] }}</p>
+                                </div>
+                            @endif
+                        @endisset
                     </td>
                     <td>
-                        <div class="flex items-center justify-center border-[1px] border-white lg:h-14 md:h-20 h-28 bg-yellow bg-opacity-10 xl:text-sm sm:text-xs text-[14px]">
-                            <p>We are SMALL</p>
-                        </div>
+{{--                        @dd($formatted_data_two['economic']['benefit'])--}}
+                        @isset($formatted_data_two['economic']['benefit'][$key])
+                            @if($formatted_data_two['economic']['rating'][$key] > 2)
+                                <div class="flex items-center justify-center border-[1px] border-white lg:h-14 md:h-20 h-28 bg-yellow bg-opacity-10 xl:text-sm sm:text-xs text-[14px]">
+                                    <p>{{ $formatted_data_two['economic']['benefit'][$key] }}</p>
+                                </div>
+                            @endif
+                        @endif
                     </td>
                     <td>
-                        <div class="flex items-center justify-center border-[1px] border-white lg:h-14 md:h-20 h-28 bg-blue bg-opacity-10 xl:text-sm sm:text-xs text-[14px]">
-                            <p>We are BIG</p>
-                        </div>
+                        @isset($formatted_data_two['functional']['benefit'][$key])
+                            @if($formatted_data_two['functional']['rating'][$key] > 2)
+                                <div class="flex items-center justify-center border-[1px] border-white lg:h-14 md:h-20 h-28 bg-blue bg-opacity-10 xl:text-sm sm:text-xs text-[14px]">
+                                    <p>{{ $formatted_data_two['functional']['benefit'][$key] }}</p>
+                                </div>
+                            @endif
+                        @endisset
                     </td>
                 </tr>
-
-                <!-- ROW 2 -->
-                <tr>
-                    <td>
-                        <div class="flex items-center justify-center border-[1px] border-white lg:h-14 md:h-20 h-28 bg-red bg-opacity-10 xl:text-sm sm:text-xs text-[14px]">
-                            <p>The Happiest Place On Earth</p>
-                        </div>
-                    </td>
-                    <td>
-                        <div class="flex items-center justify-center border-[1px] border-white lg:h-14 md:h-20 h-28 bg-yellow bg-opacity-10 xl:text-sm sm:text-xs text-[14px]">
-                            <p>Pleasing people over the World</p>
-                        </div>
-                    </td>
-                    <td>
-                        <div class="flex items-center justify-center border-[1px] border-white lg:h-14 md:h-20 h-28 bg-blue bg-opacity-10 xl:text-sm sm:text-xs text-[14px]">
-                            <p>The Best or Nothing</p>
-                        </div>
-                    </td>
-                </tr>
-
-                <!-- ROW 3 -->
-                <tr>
-                    <td class="w-1/3">
-                        <div class="px-4 flex items-center justify-center border-[1px] border-white lg:h-14 md:h-20 h-28 bg-red bg-opacity-10 xl:text-sm sm:text-xs text-[14px]">
-                            <p>Quick professional carpet cleaning at a fair price</p>
-                        </div>
-                    </td>
-                    <td>
-                        <div class="flex items-center justify-center border-[1px] border-white lg:h-14 md:h-20 h-28 bg-yellow bg-opacity-10 xl:text-sm sm:text-xs text-[14px]">
-                        </div>
-                    </td>
-                    <td>
-                        <div class="flex items-center justify-center border-[1px] border-white lg:h-14 md:h-20 h-28 bg-blue bg-opacity-10 xl:text-sm sm:text-xs text-[14px]">
-                        </div>
-                    </td>
-                </tr>
+                @endforeach
+                @endisset
             </table>
         </div>
 

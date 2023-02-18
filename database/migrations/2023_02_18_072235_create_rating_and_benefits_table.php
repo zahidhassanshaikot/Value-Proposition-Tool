@@ -13,13 +13,13 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('brand_and_benefits', function (Blueprint $table) {
+        Schema::create('rating_and_benefits', function (Blueprint $table) {
             $table->id();
             $table->string('request_user_ip');
-            $table->string('request_time');
-            $table->string('date_time');
-            $table->text('brands');
-            $table->text('benefits');
+            $table->text('user_agent');
+            $table->string('benefit');
+            $table->string('type');
+            $table->integer('rating');
             $table->timestamps();
         });
     }
@@ -31,6 +31,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('brand_and_benefits');
+        Schema::dropIfExists('rating_and_benefits');
     }
 };
