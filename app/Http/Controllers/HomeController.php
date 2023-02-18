@@ -18,6 +18,12 @@ class HomeController extends Controller
 //        session()->forget('step_two_data');
         return view('index');
     }
+    public function flashSession()
+    {
+        session()->forget('step_one_data');
+        session()->forget('step_two_data');
+        return redirect()->route('index');
+    }
 
     public function storeBenefit(Request $request){
 
@@ -108,9 +114,9 @@ class HomeController extends Controller
                 }
             }
         }
-        $max_value_array['emotional']       = count(@$new_req_data['emotional']['rating']);
-        $max_value_array['economic']        = count(@$new_req_data['economic']['rating']);
-        $max_value_array['functional']      = count(@$new_req_data['functional']['rating']);
+        $max_value_array['emotional']       = isset($new_req_data['emotional']['rating']) ? count(@$new_req_data['emotional']['rating']) : 0;
+        $max_value_array['economic']        = isset($new_req_data['economic']['rating']) ? count(@$new_req_data['economic']['rating']) : 0;
+        $max_value_array['functional']      = isset($new_req_data['functional']['rating']) ? count(@$new_req_data['functional']['rating']) : 0;
 
         session()->put('step_two_data', [
             'formatted_data'    => $new_req_data,

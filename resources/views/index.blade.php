@@ -83,7 +83,8 @@
             </p>
         </div>
         <!-- TABLE -->
-        <form action="{{ route('store-benefits') }}" method="get">
+        <form action="{{ route('store-benefits') }}" method="post">
+            @csrf
         <div class="flex items-center justify-center mt-10">
 
 
@@ -312,7 +313,7 @@
                 statement. See below the download button for tips about this.
             </p>
         </div>
-
+<div class="pdf-form">
         <!-- TRIANGLE -->
         <div class="flex items-center justify-center mt-12">
             <img src="./assets/Triangle.png" alt="benefit ranking graph" width="500px" class="mb-10" />
@@ -378,21 +379,21 @@
                 @endisset
             </table>
         </div>
-
+</div>
         <!-- BUTTONS -->
         <div class="flex items-center justify-center mt-16 gap-4">
             <div>
-                <button
+                <a type="button" href="{{ route('flash-session') }}"
                     class="sm:px-4 px-2 py-2 sm:text-base text-xs my-auto mx-auto text-white bg-dark-grey hover:bg-black border-2 border-dark-grey hover:border-black"
                 >
                     START OVER
-                </button>
+                </a>
                 <button
                     class="sm:inline hidden sm:px-4 px-2 py-2 sm:text-base text-xs my-auto lg:mx-6 sm:mx-1 mx-0 ml-6 text-white bg-light-green border-2 border-light-green"
                 >
                     SUBMIT
                 </button>
-                <button
+                <button type="button" id="generate_pdf" value="Generate PDF"
                     class="sm:inline hidden sm:px-4 px-2 py-2 sm:text-base text-xs my-auto mx-auto text-white hover:text-dark-green bg-dark-green hover:bg-white border-2 border-dark-green transition duration-500"
                 >
                     <i class="fa-solid fa-download mr-2"></i>DOWNLOAD
@@ -419,4 +420,39 @@
 </section>
 </body>
 <script src="{{ asset('src/script.js') }}"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.3.5/jspdf.min.js"></script>
+<script>
+    $(document).ready(function () {
+        var form = $('.pdf-form'),
+            cache_width = form.width(),
+            a4 = [595.28, 841.89]; // for a4 size paper width and height
+
+        $('#generate_pdf').on('click', function () {
+            $('body').scrollTop(0);
+            generatePDF();
+        });
+
+        function generatePDF() {
+            getCanvas().then(function (canvas) {
+                var img = canvas.toDataURL("image/png"),
+                    doc = new jsPDF({
+                        unit: 'px',
+                        format: 'a4'
+                    });
+                doc.addImage(img, 'JPEG', 20, 20);
+                doc.save('cvp-tools.pdf');
+                form.width(cache_width);
+            });
+        }
+
+        function getCanvas() {
+            form.width((a4[0] * 1.33333) - 80).css('max-width', 'none');
+            return html2canvas(form, {
+                imageTimeout: 2000,
+                removeContainer: true
+            });
+        }
+    });
+</script>
 </html>
