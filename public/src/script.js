@@ -2,7 +2,7 @@
 const listBenefits = document.querySelector("#list-benefits");
 
 // ADD EVENT LISTENER ON CREATE LIST BUTTON
-document.getElementById("create-list").addEventListener("click", addNewRow);
+document.getElementById("create-list")?.addEventListener("click", addNewRow);
 
 // INITIALIZE ID COUNTER TO 8
 let id = 1;
@@ -50,7 +50,7 @@ function addNewRow() {
 
   // ADD EVENT LISTENER TO NEW ROW'S DELETE BUTTON
   const newButton = newRow.querySelector(".btn-r");
-  newButton.addEventListener("click", function () {
+  newButton?.addEventListener("click", function () {
     const row = this.closest("tr");
     row.remove();
   });
@@ -60,7 +60,7 @@ function addNewRow() {
 }
 
 // ADD EVENT LISTENER TO THE TABLE TO LISTEN FOR CLICK EVENTS ON ROWS' DELETE BUTTONS
-listBenefits.addEventListener("click", function (event) {
+listBenefits?.addEventListener("click", function (event) {
   if (event.target.classList.contains("btn-r")) {
     const row = event.target.closest("tr");
     row.remove();
@@ -70,8 +70,42 @@ listBenefits.addEventListener("click", function (event) {
 // ADD EVENT LISTENERS TO THE EXISTING DELETE BUTTONS
 for (let i = 1; i <= 1; i++) {
   const button = document.getElementById(`btn-r${i}`);
-  button.addEventListener("click", function () {
+  button?.addEventListener("click", function () {
     const row = this.closest("tr");
     row.remove();
   });
 }
+
+// DOWNLOAD MODAL
+const downloadModal = document.querySelector(".download-modal");
+const showDownloadModal = document.querySelectorAll(".show-download-modal");
+const closeDownloadModal = document.querySelector(".close-download-modal");
+
+showDownloadModal.forEach((show) => {
+    show?.addEventListener("click", function () {
+        downloadModal.classList.remove("hidden");
+    });
+});
+
+closeDownloadModal?.addEventListener("click", function () {
+    downloadModal.classList.add("hidden");
+});
+
+// THANKYOU MODAL
+const thankyouModal = document.querySelector(".thankyou-modal");
+const showThankyouModal = document.querySelector(".show-thankyou-modal");
+const closeThankyouModal = document.querySelectorAll(".close-thankyou-modal");
+
+showThankyouModal?.addEventListener("click", function () {
+    thankyouModal.classList.remove("hidden");
+    downloadModal.classList.add("hidden");
+});
+
+closeThankyouModal.forEach((close) => {
+    close?.addEventListener("click", function () {
+        thankyouModal.classList.add("hidden");
+        downloadModal.classList.add("hidden");
+        window.reload();
+    });
+    window.reload();
+});

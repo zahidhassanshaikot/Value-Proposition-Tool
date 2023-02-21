@@ -262,7 +262,7 @@
                                 <p class="sm:mb-0 mb-[20px]">{{ @$formatted_data['functional'][$key] }}</p>
                                 <div class="flex items-center justify-center xl:mt-8 lg:mt-7 md:mt-10">
                                     <input type="hidden" name="functional[benefit][{{ $key }}]" value="{{ @$formatted_data['functional'][$key] }}" />
-                                    <input type="text" onkeyup="if(value<1) value=1;if(value>5) value=5;" name="functional[rating][{{ $key }}]" required
+                                    <input type="number" onkeyup="if(value<1) value=1;if(value>5) value=5;" name="functional[rating][{{ $key }}]" required
                                         class="text-black text-center placeholder:text-center text-[20px] leading-6 tracking-normal border-[1px] border-dark-grey bg-azure w-[110px] h-[46px] flex items-center justify-center px-2 focus:outline-none"
                                         placeholder="1-5"
                                     />
@@ -389,12 +389,12 @@
                     START OVER
                 </a>
                 <button
-                    class="sm:inline hidden sm:px-4 px-2 py-2 sm:text-base text-xs my-auto lg:mx-6 sm:mx-1 mx-0 ml-6 text-white bg-light-green border-2 border-light-green"
+                    class="show-download-modal sm:inline hidden sm:px-4 px-2 py-2 sm:text-base text-xs my-auto lg:mx-6 sm:mx-1 mx-0 ml-6 text-white bg-light-green border-2 border-light-green"
                 >
                     SUBMIT
                 </button>
-                <button type="button" id="generate_pdf" value="Generate PDF"
-                    class="sm:inline hidden sm:px-4 px-2 py-2 sm:text-base text-xs my-auto mx-auto text-white hover:text-dark-green bg-dark-green hover:bg-white border-2 border-dark-green transition duration-500"
+                <button
+                    class="show-download-modal sm:inline hidden sm:px-4 px-2 py-2 sm:text-base text-xs my-auto mx-auto text-white hover:text-dark-green bg-dark-green hover:bg-white border-2 border-dark-green transition duration-500"
                 >
                     <i class="fa-solid fa-download mr-2"></i>DOWNLOAD
                 </button>
@@ -404,18 +404,71 @@
         <div class="flex items-center justify-center mt-4">
             <div>
                 <button
-                    class="inline sm:hidden sm:px-4 px-2 py-2 sm:text-base text-xs my-auto lg:mx-6 sm:mx-1 mx-0 text-white bg-light-green border-2 border-light-green"
+                    class="show-download-modal inline sm:hidden sm:px-4 px-2 py-2 sm:text-base text-xs my-auto lg:mx-6 sm:mx-1 mx-0 text-white bg-light-green border-2 border-light-green"
                 >
                     SUBMIT
                 </button>
                 <button
-                    class="inline sm:hidden sm:px-4 px-2 py-2 sm:text-base text-xs my-auto mx-auto text-white hover:text-dark-green bg-dark-green hover:bg-white border-2 border-dark-green transition duration-500"
+                    class="show-download-modal inline sm:hidden sm:px-4 px-2 py-2 sm:text-base text-xs my-auto mx-auto text-white hover:text-dark-green bg-dark-green hover:bg-white border-2 border-dark-green transition duration-500"
                 >
                     <i class="fa-solid fa-download mr-2"></i>DOWNLOAD
                 </button>
             </div>
         </div>
-    </div>
+        <!-- DOWNLOAD MODAL -->
+        <div class="download-modal hidden">
+            <div class=" h-full w-full fixed left-0 bottom-0 flex justify-center items-center bg-black/20">
+                <div class="bg-white border-[1px] border-dark-grey pacity-100 rounded-xl shadow-lg lg:w-[800px] md:w-[500px] w-[300px] lg:h-[465px] md:h-[300px] h-[350px] my-auto">
+                    <!-- MODAL HEADER -->
+                    <div class="flex items-center justify-end lg:px-8 px-4 lg:py-2 pt-2 lg:mt-6">
+                        <button class="close-download-modal"><i class="fa-solid fa-xmark"></i></button>
+                    </div>
+                    <!-- MODAL BODY -->
+                    <form action="{{ route('store.client-info') }}" method="post" id="storeInfo">
+                        @csrf
+                        <div class="p-3 mx-auto lg:mt-4">
+                            <p class="text-night-rider lg:mt-1 mb-2 text-center lg:text-[22px] md:text-[18px] text-[16px]">
+                                Please enter the following details to begin your download.</p>
+                            <input type="text" name="full_name" id="full_name" required placeholder="Full Name" class="text-black mx-auto lg:mt-6 lg:mb-4 mb-4 xl:text-sm sm:text-xs text-[14px] leading-6 tracking-normal border-[1px] border-dark-grey bg-azure md:px-2 px-1 lg:w-[440px] md:w-[400px] w-[200px] h-[46px] flex items-center justify-center focus:outline-none">
+                            <input type="email" name="email" id="email" required placeholder="Email Address" class="text-black mx-auto lg:my-4 xl:text-sm sm:text-xs text-[14px] leading-6 tracking-normal border-[1px] border-dark-grey bg-azure md:px-2 px-1 lg:w-[440px] md:w-[400px] w-[200px] h-[46px] flex items-center justify-center focus:outline-none">
+                        </div>
+                        <div class="flex justify-center items-center w-100">
+                            <button type="submit"
+                                class=" sm:px-4 px-2 py-2 lg:text-base text-xs my-auto lg:mx-6 sm:mx-1 mx-0 text-white bg-light-green border-2 border-light-green"
+                            >
+                                SUBMIT
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <!-- THANKYOU MODAL -->
+        <div class="thankyou-modal hidden">
+            <div class=" h-full w-full fixed left-0 bottom-0 flex justify-center items-center bg-black/20">
+                <div class="bg-white border-[1px] border-dark-grey pacity-100 rounded-xl shadow-lg lg:w-[800px] md:w-[500px] w-[300px] lg:h-[465px] md:h-[300px] h-[350px] my-auto">
+                    <!-- MODAL HEADER -->
+                    <div class="flex items-center justify-end lg:px-8 px-4 lg:py-2 pt-2 lg:mt-6">
+                        <button class="close-thankyou-modal"><i class="fa-solid fa-xmark"></i></button>
+                    </div>
+                    <!-- MODAL BODY -->
+                    <div class="p-3 mx-auto lg:mt-4">
+                        <div class="flex items-center justify-center lg:text-7xl text-5xl text-dark-green lg:mb-4 mb-4">
+                            <i class="fa-regular fa-circle-check"></i>
+                        </div>
+                        <p class="text-night-rider lg:mt-1 mb-2 text-center lg:text-[22px] md:text-[18px] text-[16px]">
+                            Thank you, your download will begin shortly.</p>
+                    </div>
+                    <div class="flex justify-center items-center w-100">
+                        <a type="button" href="{{ route('flash-session') }}"
+                            class="close-thankyou-modal sm:px-4 px-2 py-2 lg:text-base text-xs my-auto lg:mx-6 sm:mx-1 mx-0 text-white bg-light-green border-2 border-light-green"
+                        >
+                            Back
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
     @endif
 </section>
 </body>
@@ -428,10 +481,41 @@
             cache_width = form.width(),
             a4 = [595.28, 841.89]; // for a4 size paper width and height
 
-        $('#generate_pdf').on('click', function () {
-            $('body').scrollTop(0);
-            generatePDF();
-        });
+        // $('#generate_pdf').on('click', function () {
+        //
+        //     let full_name = $("#full_name").val()
+        //     let email = $("#email").val()
+        //
+        //     $('body').scrollTop(0);
+        //     generatePDF();
+        // });
+
+
+        $('#storeInfo').on('submit', function(e) {
+
+            let full_name = $("#full_name").val()
+            let email = $("#email").val()
+
+            e.preventDefault();
+            $.ajax({
+                type: "POST",
+                url: "{{ route('store.client-info') }}",
+                data: $(this).serialize(),
+                success: function(response) {
+                    if(response.status ) {
+                        $('.thankyou-modal').removeClass('hidden')
+                        $('.modal').addClass('hidden')
+                        $('body').scrollTop(0);
+                        generatePDF();
+                    }else{
+                        alert('Something went wrong')
+                    }
+                },
+                error: function(error) {
+                    console.log(error)
+                }
+            });
+        })
 
         function generatePDF() {
             getCanvas().then(function (canvas) {
