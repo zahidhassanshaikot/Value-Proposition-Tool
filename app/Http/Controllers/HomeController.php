@@ -40,6 +40,9 @@ class HomeController extends Controller
             return redirect()->back()->withErrors($validator)->withInput();
         }
 
+        session()->forget('step_one_data');
+        session()->forget('step_two_data');
+
         $req_data = $request->all();
         $formatted_data = [];
 
@@ -58,11 +61,13 @@ class HomeController extends Controller
             'max_data_key' => array_search(max($length), $length),
         ];
         session()->put('step_one_data', $data);
-        return redirect()->back();
+        return redirect(url()->previous() .'#step_2')->withInput();
+//        return redirect()->back();
     }
 
     public function storeBenefitsRatings(Request $request)
     {
+        session()->forget('step_two_data');
         $req_data = $request->except(['_token']);
         $step_one_data = session()->get('step_one_data');
         $max_data_key = $step_one_data['max_data_key'];
@@ -127,7 +132,7 @@ class HomeController extends Controller
             'formatted_data' => $new_req_data,
             'max_data_key' => array_search(max($max_value_array), $max_value_array),
         ]);
-        return redirect()->back();
+        return redirect(url()->previous() .'#step_3')->withInput();
     }
 
     protected function storeRatingAndBenefit($data)

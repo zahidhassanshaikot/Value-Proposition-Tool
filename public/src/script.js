@@ -13,7 +13,7 @@ function addNewRow() {
   const rowDetails = `<td>
                         <div class="flex items-center justify-center">
                           <button class="mr-2 text-red btn-r" id="btn-r${id}"><i class="fa-solid fa-circle-xmark"></i></button>
-                          <input name="benefit[${id}]" type="text" class="text-black xl:text-sm sm:text-xs text-[14px] leading-6 tracking-normal border-[1px] border-dark-grey bg-azure md:px-2 px-1 xl:w-[440px] lg:w-[300px] md:w-[200px] w-[100px] h-[46px] text-center flex items-center justify-center focus:outline-none">
+                          <input name="benefit[${id}]" maxlength="50" type="text" class="text-black xl:text-sm sm:text-xs text-[14px] leading-6 tracking-normal border-[1px] border-dark-grey bg-azure md:px-2 px-1 xl:w-[440px] lg:w-[300px] md:w-[200px] w-[100px] h-[46px] text-center flex items-center justify-center focus:outline-none">
                         </div>
                       </td>
                       <td>

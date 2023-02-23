@@ -62,8 +62,8 @@
     </div>
 
     <!-- STEP 1 -->
-    @if(!session()->has('step_one_data') && !session()->has('step_two_data'))
-    <div class="mt-20 mb-16 md:mx-11">
+{{--    @if(!session()->has('step_one_data') && !session()->has('step_two_data'))--}}
+    <div class="mt-20 mb-16 md:mx-11" id="step_1">
         <!-- HEADING -->
         <div class="flex items-center justify-center">
             <div class="h-[2px] w-16 bg-dark-green"></div>
@@ -119,7 +119,7 @@
                     <td>
                         <div class="flex items-center justify-center">
                             <button class="mr-2 text-red btn-r" id="btn-r1"><i class="fa-solid fa-circle-xmark"></i></button>
-                            <input name="benefit[0]" type="text" class="text-black xl:text-sm sm:text-xs text-[14px] leading-6 tracking-normal border-[1px] border-dark-grey bg-azure md:px-2 px-1 xl:w-[440px] lg:w-[300px] md:w-[200px] w-[100px] h-[46px] text-center flex items-center justify-center focus:outline-none">
+                            <input name="benefit[0]" maxlength="50" type="text" class="text-black xl:text-sm sm:text-xs text-[14px] leading-6 tracking-normal border-[1px] border-dark-grey bg-azure md:px-2 px-1 xl:w-[440px] lg:w-[300px] md:w-[200px] w-[100px] h-[46px] text-center flex items-center justify-center focus:outline-none">
                         </div>
                     </td>
                     <td>
@@ -170,13 +170,13 @@
 
         </form>
     </div>
-    @endif
+{{--    @endif--}}
     <!-- HORIZONTAL LINE SECTION DIVIDER -->
     <div class="w-full h-[1px] bg-grey"></div>
 
-    @if(session()->has('step_one_data') && !session()->has('step_two_data'))
+{{--    @if(session()->has('step_one_data') && !session()->has('step_two_data'))--}}
     <!-- STEP 2 -->
-    <div  class="mt-20 mb-16 md:mx-11">
+    <div  class="mt-20 mb-16 md:mx-11" id="step_2">
         <!-- HEADING -->
         <div class="flex items-center justify-center">
             <div class="h-[2px] w-16 bg-dark-green"></div>
@@ -215,64 +215,65 @@
                 <!-- ROW 1 -->
                 @php
                     $step_one_data      = session()->get('step_one_data');
-                    $formatted_data     = $step_one_data['formatted_data'];
-                    $max_data_key       = $step_one_data['max_data_key'];
+                    $formatted_data     = @$step_one_data['formatted_data'];
+                    $max_data_key       = @$step_one_data['max_data_key'];
 //                @endphp
-
-                @foreach($formatted_data[$max_data_key] as $key => $value)
-                <tr>
-                    <td>
-                        @isset($formatted_data['emotional'][$key])
-                        <div class="flex items-center justify-center">
-                            <div class="text-black xl:text-sm sm:text-xs text-[14px]">
-                                <p>{{ @$formatted_data['emotional'][$key] }}</p>
-                                <div class="flex items-center justify-center mt-3">
-                                    <input type="hidden" name="emotional[benefit][{{ $key }}]" value="{{ @$formatted_data['emotional'][$key] }}" />
-                                    <input type="text" onkeyup="if(value<1) value=1;if(value>5) value=5;" name="emotional[rating][{{ $key }}]" required
-                                        class="text-black text-center placeholder:text-center leading-6 tracking-normal border-[1px] border-dark-grey bg-azure w-[110px] h-[46px] flex items-center justify-center px-2 focus:outline-none"
-                                        placeholder="1-5"
-                                    />
+                @isset($formatted_data[$max_data_key])
+                    @foreach($formatted_data[$max_data_key] as $key => $value)
+                    <tr>
+                        <td>
+                            @isset($formatted_data['emotional'][$key])
+                            <div class="flex items-center justify-center">
+                                <div class="text-black xl:text-sm sm:text-xs text-[14px]">
+                                    <p>{{ @$formatted_data['emotional'][$key] }}</p>
+                                    <div class="flex items-center justify-center mt-3">
+                                        <input type="hidden" name="emotional[benefit][{{ $key }}]" value="{{ @$formatted_data['emotional'][$key] }}" />
+                                        <input type="number" min="1" max="5" name="emotional[rating][{{ $key }}]" required
+                                            class="text-black text-center placeholder:text-center leading-6 tracking-normal border-[1px] border-dark-grey bg-azure w-[110px] h-[46px] flex items-center justify-center px-2 focus:outline-none"
+                                            placeholder="1-5"
+                                        />
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                        @endisset
-                    </td>
+                            @endisset
+                        </td>
 
-                    <td>
-                        @isset($formatted_data['economic'][$key])
-                        <div class="flex items-center justify-center">
-                            <div class="text-black xl:text-sm sm:text-xs text-[14px] sm:mt-0  mt-[83px]">
-                                <p class="sm:mb-0 mb-[20px]">{{ @$formatted_data['economic'][$key] }}</p>
-                                <div class="flex items-center justify-center xl:mt-8 lg:mt-7 md:mt-10">
-                                    <input type="hidden" name="economic[benefit][{{ $key }}]" value="{{ @$formatted_data['economic'][$key] }}" />
-                                    <input type="text" onkeyup="if(value<1) value=1;if(value>5) value=5;" name="economic[rating][{{ $key }}]" required
-                                        class="text-black text-center placeholder:text-center text-[20px] leading-6 tracking-normal border-[1px] border-dark-grey bg-azure w-[110px] h-[46px] flex items-center justify-center px-2 focus:outline-none"
-                                        placeholder="1-5"
-                                    />
+                        <td>
+                            @isset($formatted_data['economic'][$key])
+                            <div class="flex items-center justify-center">
+                                <div class="text-black xl:text-sm sm:text-xs text-[14px] sm:mt-0  mt-[83px]">
+                                    <p class="sm:mb-0 mb-[20px]">{{ @$formatted_data['economic'][$key] }}</p>
+                                    <div class="flex items-center justify-center xl:mt-8 lg:mt-7 md:mt-10">
+                                        <input type="hidden" name="economic[benefit][{{ $key }}]" value="{{ @$formatted_data['economic'][$key] }}" />
+                                        <input type="number" min="1" max="5" name="economic[rating][{{ $key }}]" required
+                                            class="text-black text-center placeholder:text-center text-[20px] leading-6 tracking-normal border-[1px] border-dark-grey bg-azure w-[110px] h-[46px] flex items-center justify-center px-2 focus:outline-none"
+                                            placeholder="1-5"
+                                        />
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                        @endisset
-                    </td>
+                            @endisset
+                        </td>
 
-                    <td>
-                        @isset($formatted_data['functional'][$key])
-                        <div class="flex items-center justify-center">
-                            <div class="text-black xl:text-sm sm:text-xs text-[14px] sm:mt-0  mt-[83px]">
-                                <p class="sm:mb-0 mb-[20px]">{{ @$formatted_data['functional'][$key] }}</p>
-                                <div class="flex items-center justify-center xl:mt-8 lg:mt-7 md:mt-10">
-                                    <input type="hidden" name="functional[benefit][{{ $key }}]" value="{{ @$formatted_data['functional'][$key] }}" />
-                                    <input type="number" onkeyup="if(value<1) value=1;if(value>5) value=5;" name="functional[rating][{{ $key }}]" required
-                                        class="text-black text-center placeholder:text-center text-[20px] leading-6 tracking-normal border-[1px] border-dark-grey bg-azure w-[110px] h-[46px] flex items-center justify-center px-2 focus:outline-none"
-                                        placeholder="1-5"
-                                    />
+                        <td>
+                            @isset($formatted_data['functional'][$key])
+                            <div class="flex items-center justify-center">
+                                <div class="text-black xl:text-sm sm:text-xs text-[14px] sm:mt-0  mt-[83px]">
+                                    <p class="sm:mb-0 mb-[20px]">{{ @$formatted_data['functional'][$key] }}</p>
+                                    <div class="flex items-center justify-center xl:mt-8 lg:mt-7 md:mt-10">
+                                        <input type="hidden" name="functional[benefit][{{ $key }}]" value="{{ @$formatted_data['functional'][$key] }}" />
+                                        <input type="number" min="1" max="5" name="functional[rating][{{ $key }}]" required
+                                            class="text-black text-center placeholder:text-center text-[20px] leading-6 tracking-normal border-[1px] border-dark-grey bg-azure w-[110px] h-[46px] flex items-center justify-center px-2 focus:outline-none"
+                                            placeholder="1-5"
+                                        />
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                        @endisset
-                    </td>
-                </tr>
-                @endforeach
+                            @endisset
+                        </td>
+                    </tr>
+                    @endforeach
+                @endisset
             </table>
         </div>
         <!-- BUTTON -->
@@ -285,14 +286,14 @@
         </div>
         </form>
     </div>
-    @endif
+{{--    @endif--}}
 
     <!-- HORIZONTAL LINE SECTION DIVIDER -->
     <div class="w-full h-[1px] bg-grey"></div>
 
     <!-- STEP 3 -->
-    @if(session()->has('step_two_data') && session()->has('step_one_data'))
-    <div  class="mt-20 mb-16 md:mx-11">
+{{--    @if(session()->has('step_two_data') && session()->has('step_one_data'))--}}
+    <div  class="mt-20 mb-16 md:mx-11" id="step_3">
         <!-- HEADING -->
         <div class="flex items-center justify-center">
             <div class="h-[2px] w-16 bg-dark-green"></div>
@@ -313,7 +314,7 @@
                 statement. See below the download button for tips about this.
             </p>
         </div>
-<div class="pdf-form">
+        <div class="pdf-form">
         <!-- TRIANGLE -->
         <div class="flex items-center justify-center mt-12">
             <img src="./assets/Triangle.png" alt="benefit ranking graph" width="500px" class="mb-10" />
@@ -338,8 +339,8 @@
                 </tr>
                 @php
                     $session_data_two   = session()->get('step_two_data');
-                    $formatted_data_two = $session_data_two['formatted_data'];
-                    $max_data_key       = $session_data_two['max_data_key'];
+                    $formatted_data_two = @$session_data_two['formatted_data'];
+                    $max_data_key       = @$session_data_two['max_data_key'];
                 @endphp
                 @isset($formatted_data_two[$max_data_key])
                 @foreach($formatted_data_two[$max_data_key]['benefit'] as $key => $value)
@@ -379,7 +380,7 @@
                 @endisset
             </table>
         </div>
-</div>
+        </div>
         <!-- BUTTONS -->
         <div class="flex items-center justify-center mt-16 gap-4">
             <div>
@@ -469,7 +470,8 @@
                 </div>
             </div>
         </div>
-    @endif
+    </div>
+{{--    @endif--}}
 </section>
 </body>
 <script src="{{ asset('src/script.js') }}"></script>
@@ -480,16 +482,6 @@
         var form = $('.pdf-form'),
             cache_width = form.width(),
             a4 = [595.28, 841.89]; // for a4 size paper width and height
-
-        // $('#generate_pdf').on('click', function () {
-        //
-        //     let full_name = $("#full_name").val()
-        //     let email = $("#email").val()
-        //
-        //     $('body').scrollTop(0);
-        //     generatePDF();
-        // });
-
 
         $('#storeInfo').on('submit', function(e) {
 
