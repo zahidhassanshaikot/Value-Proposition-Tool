@@ -217,6 +217,9 @@
                     $step_one_data      = session()->get('step_one_data');
                     $formatted_data     = @$step_one_data['formatted_data'];
                     $max_data_key       = @$step_one_data['max_data_key'];
+
+                    $step_two_data_for_input        = session()->get('step_two_data');
+                    $step_two_input_data            = @$step_two_data_for_input['step_two_input_data'];
 //                @endphp
                 @isset($formatted_data[$max_data_key])
                     @foreach($formatted_data[$max_data_key] as $key => $value)
@@ -230,7 +233,7 @@
                                         <input type="hidden" name="emotional[benefit][{{ $key }}]" value="{{ @$formatted_data['emotional'][$key] }}" />
                                         <input type="number" min="1" max="5" name="emotional[rating][{{ $key }}]" required
                                             class="text-black text-center placeholder:text-center leading-6 tracking-normal border-[1px] border-dark-grey bg-azure w-[110px] h-[46px] flex items-center justify-center px-2 focus:outline-none"
-                                            placeholder="1-5"
+                                            placeholder="1-5" value="{{ @$step_two_input_data['emotional']['rating'][$key] }}"
                                         />
                                     </div>
                                 </div>
@@ -247,7 +250,7 @@
                                         <input type="hidden" name="economic[benefit][{{ $key }}]" value="{{ @$formatted_data['economic'][$key] }}" />
                                         <input type="number" min="1" max="5" name="economic[rating][{{ $key }}]" required
                                             class="text-black text-center placeholder:text-center text-[20px] leading-6 tracking-normal border-[1px] border-dark-grey bg-azure w-[110px] h-[46px] flex items-center justify-center px-2 focus:outline-none"
-                                            placeholder="1-5"
+                                            placeholder="1-5" value="{{ @$step_two_input_data['economic']['rating'][$key] }}"
                                         />
                                     </div>
                                 </div>
@@ -264,7 +267,7 @@
                                         <input type="hidden" name="functional[benefit][{{ $key }}]" value="{{ @$formatted_data['functional'][$key] }}" />
                                         <input type="number" min="1" max="5" name="functional[rating][{{ $key }}]" required
                                             class="text-black text-center placeholder:text-center text-[20px] leading-6 tracking-normal border-[1px] border-dark-grey bg-azure w-[110px] h-[46px] flex items-center justify-center px-2 focus:outline-none"
-                                            placeholder="1-5"
+                                            placeholder="1-5" value="{{ @$step_two_input_data['functional']['rating'][$key] }}"
                                         />
                                     </div>
                                 </div>
@@ -498,7 +501,7 @@
                         $('.thankyou-modal').removeClass('hidden')
                         $('.modal').addClass('hidden')
                         $('body').scrollTop(0);
-                        generatePDF();
+                        window.location.href = "{{ route('download-pdf') }}";
                     }else{
                         alert('Something went wrong')
                     }
@@ -509,6 +512,18 @@
             });
         })
 
+        function generatePDF() {
+            getCanvas().then(function (canvas) {
+                var img = canvas.toDataURL("image/png"),
+                    doc = new jsPDF({
+                        unit: 'px',
+                        format: 'a4'
+                    });
+                doc.addImage(img, 'JPEG', 20, 20);
+                doc.save('cvp-tools.pdf');
+                form.width(cache_width);
+            });
+        }
         function generatePDF() {
             getCanvas().then(function (canvas) {
                 var img = canvas.toDataURL("image/png"),

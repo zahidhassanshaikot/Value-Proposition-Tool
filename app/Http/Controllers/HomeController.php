@@ -11,9 +11,17 @@ use Illuminate\Contracts\View\View;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class HomeController extends Controller
 {
+    public function downloadPdf()
+    {
+        $pdf = Pdf::loadView('pdf');
+//        return $pdf->stream('invoice.pdf');
+        return $pdf->download('cvp-tools.pdf');
+    }
+
     public function index(): Factory|View|Application
     {
 //        session()->forget('step_one_data');
@@ -131,6 +139,7 @@ class HomeController extends Controller
         session()->put('step_two_data', [
             'formatted_data' => $new_req_data,
             'max_data_key' => array_search(max($max_value_array), $max_value_array),
+            'step_two_input_data' => $request->except('_token'),
         ]);
         return redirect(url()->previous() .'#step_3')->withInput();
     }
@@ -168,8 +177,8 @@ class HomeController extends Controller
                 'email' => $request->email,
             ]);
 
-            session()->forget('step_one_data');
-            session()->forget('step_two_data');
+//            session()->forget('step_one_data');
+//            session()->forget('step_two_data');
 
             return response()->json([
                 'status' => true,

@@ -3,6 +3,8 @@
 use App\Http\Controllers\HomeController;
 use Illuminate\Support\Facades\Route;
 
+Route::get('/download-pdf', [HomeController::class, 'downloadPdf'])->name('download-pdf');
+
 Route::get('/', [HomeController::class, 'index'])->name('index');
 Route::post('/store-benefits', [HomeController::class, 'storeBenefit'])->name('store-benefits');
 Route::post('/store-benefits-ratings', [HomeController::class, 'storeBenefitsRatings'])->name('store-benefits-ratings');

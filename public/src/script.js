@@ -105,7 +105,7 @@ closeThankyouModal.forEach((close) => {
     close?.addEventListener("click", function () {
         thankyouModal.classList.add("hidden");
         downloadModal.classList.add("hidden");
-        window.reload();
+        // window.reload();
     });
-    window.reload();
+    // window.reload();
 });
