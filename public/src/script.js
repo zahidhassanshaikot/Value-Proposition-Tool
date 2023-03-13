@@ -5,7 +5,9 @@ const listBenefits = document.querySelector("#list-benefits");
 document.getElementById("create-list")?.addEventListener("click", addNewRow);
 
 // INITIALIZE ID COUNTER TO 8
-let id = 1;
+let id = document.querySelectorAll(".btn-r").length+1;
+//
+
 
 // CREATE ADD NEW ROW FUNCTION
 function addNewRow() {
@@ -13,7 +15,7 @@ function addNewRow() {
   const rowDetails = `<td>
                         <div class="flex items-center justify-center">
                           <button class="mr-2 text-red btn-r" id="btn-r${id}"><i class="fa-solid fa-circle-xmark"></i></button>
-                          <input name="benefit[${id}]" maxlength="50" type="text" class="text-black xl:text-sm sm:text-xs text-[14px] leading-6 tracking-normal border-[1px] border-dark-grey bg-azure md:px-2 px-1 xl:w-[440px] lg:w-[300px] md:w-[200px] w-[100px] h-[46px] text-center flex items-center justify-center focus:outline-none">
+                          <input name="benefit[${id}]" required maxlength="50" type="text" class="text-black xl:text-sm sm:text-xs text-[14px] leading-6 tracking-normal border-[1px] border-dark-grey bg-azure md:px-2 px-1 xl:w-[440px] lg:w-[300px] md:w-[200px] w-[100px] h-[46px] text-center flex items-center justify-center focus:outline-none">
                         </div>
                       </td>
                       <td>
@@ -68,7 +70,7 @@ listBenefits?.addEventListener("click", function (event) {
 });
 
 // ADD EVENT LISTENERS TO THE EXISTING DELETE BUTTONS
-for (let i = 1; i <= 1; i++) {
+for (let i = 1; i <= id; i++) {
   const button = document.getElementById(`btn-r${i}`);
   button?.addEventListener("click", function () {
     const row = this.closest("tr");

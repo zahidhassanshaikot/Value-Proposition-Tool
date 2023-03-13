@@ -82,11 +82,27 @@
                 functional/technical (product advantages).
             </p>
         </div>
+
         <!-- TABLE -->
         <form action="{{ route('store-benefits') }}" method="post">
             @csrf
+            @php
+                    $step_one_data      = session()->get('step_one_data');
+                    $step_one_count     = isset($step_one_data) ? $step_one_data['count_raw_data'] : 1;
+            @endphp
+            <input type="hidden" id="step_one_count" value="{{ $step_one_count }}">
+            <div class="flex items-center justify-center mt-10">
+            @if ($errors->has('type'))
+                <p class="text-red text-xs italic">{{ $errors->first('type') }}</p>
+            @endif
+            @if ($errors->has('benefit'))
+                <p class="text-red text-xs italic">{{ $errors->first('benefit') }}</p>
+            @endif
+            @if(session()->has('benefit_type_error'))
+                <p class="text-red text-xs italic">{{ session()->get('benefit_type_error') }}</p>
+            @endif
+        </div>
         <div class="flex items-center justify-center mt-10">
-
 
             <table
                 style="
@@ -115,38 +131,79 @@
                 </tr>
 
                 <!-- ROW 1 -->
-                <tr class="deletable-row" id="1">
-                    <td>
-                        <div class="flex items-center justify-center">
-                            <button class="mr-2 text-red btn-r" id="btn-r1"><i class="fa-solid fa-circle-xmark"></i></button>
-                            <input name="benefit[0]" maxlength="50" type="text" class="text-black xl:text-sm sm:text-xs text-[14px] leading-6 tracking-normal border-[1px] border-dark-grey bg-azure md:px-2 px-1 xl:w-[440px] lg:w-[300px] md:w-[200px] w-[100px] h-[46px] text-center flex items-center justify-center focus:outline-none">
-                        </div>
-                    </td>
-                    <td>
-                        <label class="flex items-center justify-center">
-                            <input name="type[0]"
-                                type="radio"
-                                value="emotional"
-                            />
-                            <span></span>
-                        </label>
-                    </td>
-                    <td>
-                        <label class="flex items-center justify-center">
-                            <input name="type[0]" type="radio"  value="economic" />
-                            <span></span>
-                        </label>
-                    </td>
-                    <td>
-                        <label class="flex items-center justify-center">
-                            <input name="type[0]"
-                                type="radio"
-                                value="functional"
-                            />
-                            <span></span>
-                        </label>
-                    </td>
-                </tr>
+                @if(isset($step_one_data))
+                    @php
+                        $step_one_raw_data = $step_one_data['raw_data'];
+//                    @endphp
+
+                @foreach($step_one_raw_data['benefit'] as $i => $benefit)
+                        <tr class="deletable-row" id="{{ $i+1 }}">
+                            <td>
+                                <div class="flex items-center justify-center">
+                                    <button type="button" class="mr-2 text-red btn-r" id="btn-r{{$i+1}}"><i class="fa-solid fa-circle-xmark"></i></button>
+                                    <input name="benefit[{{$i}}]" value="{{ @$step_one_raw_data['benefit'][$i] }}" required maxlength="50" type="text" class="text-black xl:text-sm sm:text-xs text-[14px] leading-6 tracking-normal border-[1px] border-dark-grey bg-azure md:px-2 px-1 xl:w-[440px] lg:w-[300px] md:w-[200px] w-[100px] h-[46px] text-center flex items-center justify-center focus:outline-none">
+                                </div>
+                            </td>
+                            <td>
+                                <label class="flex items-center justify-center">
+                                    <input name="type[{{$i}}]"
+                                        type="radio"
+                                        value="emotional" {{ @$step_one_raw_data['type'][$i] == 'emotional' ? 'checked' : '' }}
+                                    />
+                                    <span></span>
+                                </label>
+                            </td>
+                            <td>
+                                <label class="flex items-center justify-center">
+                                    <input name="type[{{$i}}]" type="radio" value="economic" {{ @$step_one_raw_data['type'][$i] == 'economic' ? 'checked' : '' }}/>
+                                    <span></span>
+                                </label>
+                            </td>
+                            <td>
+                                <label class="flex items-center justify-center">
+                                    <input name="type[{{$i}}]"
+                                        type="radio"
+                                        value="functional" {{ @$step_one_raw_data['type'][$i] == 'functional' ? 'checked' : '' }}
+                                    />
+                                    <span></span>
+                                </label>
+                            </td>
+                         </tr>
+                    @endforeach
+                @else
+                    <tr class="deletable-row" id="{{ $step_one_count }}">
+                        <td>
+                            <div class="flex items-center justify-center">
+                                <button class="mr-2 text-red btn-r" id="btn-r1"><i class="fa-solid fa-circle-xmark"></i></button>
+                                <input name="benefit[0]" required maxlength="50" type="text" class="text-black xl:text-sm sm:text-xs text-[14px] leading-6 tracking-normal border-[1px] border-dark-grey bg-azure md:px-2 px-1 xl:w-[440px] lg:w-[300px] md:w-[200px] w-[100px] h-[46px] text-center flex items-center justify-center focus:outline-none">
+                            </div>
+                        </td>
+                        <td>
+                            <label class="flex items-center justify-center">
+                                <input name="type[0]"
+                                       type="radio"
+                                       value="emotional"
+                                />
+                                <span></span>
+                            </label>
+                        </td>
+                        <td>
+                            <label class="flex items-center justify-center">
+                                <input name="type[0]" type="radio" value="economic"/>
+                                <span></span>
+                            </label>
+                        </td>
+                        <td>
+                            <label class="flex items-center justify-center">
+                                <input name="type[0]"
+                                       type="radio"
+                                       value="functional"
+                                />
+                                <span></span>
+                            </label>
+                        </td>
+                    </tr>
+                @endif
 
             </table>
 

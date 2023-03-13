@@ -38,15 +38,15 @@ class HomeController extends Controller
 
     public function storeBenefit(Request $request)
     {
-
-        $validator = Validator::make($request->all(), [
-            'benefit' => 'required',
-            'type' => 'required',
+        $validator = $request->validate([
+            "benefit"    => "required",
+            "benefit.*"  => "required",
+            'type'          => 'required',
+            'type.*'        => 'required_with:benefit.*',
         ]);
-
-        if ($validator->fails()) {
-            return redirect()->back()->withErrors($validator)->withInput();
-        }
+//        if ($validator->fails()) {
+//            return redirect()->back()->withErrors($validator)->withInput();
+//        }
 
         session()->forget('step_one_data');
         session()->forget('step_two_data');
@@ -57,17 +57,26 @@ class HomeController extends Controller
         foreach ($req_data['benefit'] as $key => $value) {
             if (isset($req_data['type'][$key])) {
                 $formatted_data[$req_data['type'][$key]][] = $value;
+            }else{
+                session()->flash('benefit_type_error', 'Please select all benefit type.');
+                return redirect()->back()->withInput();
             }
         }
 
         foreach ($formatted_data as $key => $value) {
             $length[$key] = count($value);
         }
-
+        $ra_data = [
+            'benefit' => array_values($req_data['benefit']),
+            'type' => array_values($req_data['type']),
+        ];
         $data = [
+            'raw_data' => $ra_data,
+            'count_raw_data' => count($req_data['benefit']),
             'formatted_data' => $formatted_data,
             'max_data_key' => array_search(max($length), $length),
         ];
+
         session()->put('step_one_data', $data);
         return redirect(url()->previous() .'#step_2')->withInput();
 //        return redirect()->back();
